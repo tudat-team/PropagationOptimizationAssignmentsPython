@@ -114,9 +114,9 @@ import random
 import os
 
 # Tudatpy imports
-from tudatpy.io import save2txt
+from tudatpy.data import save2txt
 from tudatpy.kernel import constants
-from tudatpy.kernel.interface import spice_interface
+from tudatpy.kernel.interface import spice as spice_interface
 from tudatpy.kernel.numerical_simulation import environment_setup
 from tudatpy.kernel.numerical_simulation import propagation_setup
 from tudatpy.kernel import numerical_simulation

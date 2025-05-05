@@ -26,7 +26,7 @@ import numpy as np
 
 # Tudatpy imports
 import tudatpy
-from tudatpy.io import save2txt
+from tudatpy.data import save2txt
 from tudatpy.kernel import constants
 from tudatpy.kernel.numerical_simulation import propagation_setup
 from tudatpy.kernel import numerical_simulation
