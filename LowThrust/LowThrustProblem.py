@@ -23,12 +23,12 @@ import LowThrustUtilities as Util
 # Tudatpy imports
 import tudatpy
 from tudatpy.data import save2txt
-from tudatpy.kernel import constants
-from tudatpy.kernel.numerical_simulation import propagation_setup
-from tudatpy.kernel import numerical_simulation
-from tudatpy.kernel.math import interpolators
-from tudatpy.kernel.trajectory_design import shape_based_thrust
-from tudatpy.kernel.trajectory_design import transfer_trajectory
+from tudatpy import constants
+from tudatpy.numerical_simulation import propagation_setup
+from tudatpy import numerical_simulation
+from tudatpy.math import interpolators
+from tudatpy.trajectory_design import shape_based_thrust
+from tudatpy.trajectory_design import transfer_trajectory
 
 ###########################################################################
 # CREATE PROBLEM CLASS ####################################################
@@ -60,7 +60,7 @@ class LowThrustProblem:
     """
 
     def __init__(self,
-                 bodies: tudatpy.kernel.numerical_simulation.environment.SystemOfBodies,
+                 bodies: tudatpy.numerical_simulation.environment.SystemOfBodies,
                  minimum_mars_distance: float,
                  time_buffer: float,
                  vehicle_mass: float,
@@ -70,7 +70,7 @@ class LowThrustProblem:
         Constructor for the LowThrustProblem class.
         Parameters
         ----------
-        bodies : tudatpy.kernel.numerical_simulation.environment.SystemOfBodies,
+        bodies : tudatpy.numerical_simulation.environment.SystemOfBodies,
             System of bodies present in the simulation.
         minimum_mars_distance : float
             Minimum distance from Mars at which the propagation stops.
@@ -131,7 +131,7 @@ class LowThrustProblem:
         """
         return self.dynamics_simulator_function( ).get_dependent_variable_history()
 
-    def get_last_run_dynamics_simulator(self) -> tudatpy.kernel.numerical_simulation.SingleArcSimulator:
+    def get_last_run_dynamics_simulator(self) -> tudatpy.numerical_simulation.SingleArcSimulator:
         """
         Returns the dynamics simulator object.
         Parameters
@@ -139,7 +139,7 @@ class LowThrustProblem:
         none
         Returns
         -------
-        tudatpy.kernel.numerical_simulation.SingleArcSimulator
+        tudatpy.numerical_simulation.SingleArcSimulator
         """
         return self.dynamics_simulator_function( )
 

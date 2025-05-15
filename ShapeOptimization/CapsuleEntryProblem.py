@@ -26,9 +26,9 @@ import CapsuleEntryUtilities as Util
 # Tudatpy imports
 import tudatpy
 from tudatpy.data import save2txt
-from tudatpy.kernel import constants
-from tudatpy.kernel.numerical_simulation import propagation_setup
-from tudatpy.kernel import numerical_simulation
+from tudatpy import constants
+from tudatpy.numerical_simulation import propagation_setup
+from tudatpy import numerical_simulation
 
 ###########################################################################
 # CREATE PROBLEM CLASS ####################################################
@@ -56,7 +56,7 @@ class ShapeOptimizationProblem:
     """
 
     def __init__(self,
-                 bodies: tudatpy.kernel.numerical_simulation.environment.SystemOfBodies,
+                 bodies: tudatpy.numerical_simulation.environment.SystemOfBodies,
                  termination_settings,
                  capsule_density: float,
                  simulation_start_epoch: float,
@@ -65,11 +65,11 @@ class ShapeOptimizationProblem:
         Constructor for the ShapeOptimizationProblem class.
         Parameters
         ----------
-        bodies : tudatpy.kernel.simulation.environment_setup.SystemOfBodies
+        bodies : tudatpy.simulation.environment_setup.SystemOfBodies
             System of bodies present in the simulation.
-        integrator_settings : tudatpy.kernel.simulation.propagation_setup.integrator.IntegratorSettings
+        integrator_settings : tudatpy.simulation.propagation_setup.integrator.IntegratorSettings
             Integrator settings to be provided to the dynamics simulator.
-        propagator_settings : tudatpy.kernel.simulation.propagation_setup.propagator.MultiTypePropagatorSettings
+        propagator_settings : tudatpy.simulation.propagation_setup.propagator.MultiTypePropagatorSettings
             Propagator settings object.
         capsule_density : float
             Constant density of the vehicle.
@@ -134,7 +134,7 @@ class ShapeOptimizationProblem:
         none
         Returns
         -------
-        tudatpy.kernel.simulation.propagation_setup.SingleArcDynamicsSimulator
+        tudatpy.simulation.propagation_setup.SingleArcDynamicsSimulator
         """
         return self.dynamics_simulator_function( )
 

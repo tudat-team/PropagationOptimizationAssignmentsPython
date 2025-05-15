@@ -27,12 +27,12 @@ import numpy as np
 # Tudatpy imports
 import tudatpy
 from tudatpy.data import save2txt
-from tudatpy.kernel import constants
-from tudatpy.kernel.numerical_simulation import propagation_setup
-from tudatpy.kernel import numerical_simulation
-from tudatpy.kernel.math import interpolators
-from tudatpy.kernel.trajectory_design import shape_based_thrust
-from tudatpy.kernel.trajectory_design import transfer_trajectory
+from tudatpy import constants
+from tudatpy.numerical_simulation import propagation_setup
+from tudatpy import numerical_simulation
+from tudatpy.math import interpolators
+from tudatpy.trajectory_design import shape_based_thrust
+from tudatpy.trajectory_design import transfer_trajectory
 
 
 ###########################################################################
@@ -43,7 +43,7 @@ from tudatpy.kernel.trajectory_design import transfer_trajectory
 def get_termination_settings(trajectory_parameters,
                              minimum_mars_distance: float,
                              time_buffer: float) \
-        -> tudatpy.kernel.numerical_simulation.propagation_setup.propagator.PropagationTerminationSettings:
+        -> tudatpy.numerical_simulation.propagation_setup.propagator.PropagationTerminationSettings:
     """
     Get the termination settings for the simulation.
 
@@ -62,7 +62,7 @@ def get_termination_settings(trajectory_parameters,
 
     Returns
     -------
-    hybrid_termination_settings : tudatpy.kernel.numerical_simulation.propagation_setup.propagator.PropagationTerminationSettings
+    hybrid_termination_settings : tudatpy.numerical_simulation.propagation_setup.propagator.PropagationTerminationSettings
         Propagation termination settings object.
     """
     # Create single PropagationTerminationSettings objects
@@ -103,7 +103,7 @@ def get_dependent_variable_save_settings() -> list:
 
     Returns
     -------
-    dependent_variables_to_save : list[tudatpy.kernel.numerical_simulation.propagation_setup.dependent_variable]
+    dependent_variables_to_save : list[tudatpy.numerical_simulation.propagation_setup.dependent_variable]
         List of dependent variables to save.
     """
     dependent_variables_to_save = [propagation_setup.dependent_variable.relative_distance('Vehicle', 'Earth'),
@@ -135,22 +135,22 @@ def get_propagator_settings( trajectory_parameters,
         List of free parameters for the low-thrust model, which will be used to update the vehicle properties such that
         the new thrust/magnitude direction are used. The meaning of the parameters in this list is stated at the
         start of the *Propagation.py file
-    bodies : tudatpy.kernel.numerical_simulation.environment.SystemOfBodies
+    bodies : tudatpy.numerical_simulation.environment.SystemOfBodies
         System of bodies present in the simulation.
     initial_propagation_time : float
         Start of the simulation [s] with t=0 at J2000.
     vehicle_initial_mass : float
         Mass of the vehicle to be used at the initial time
-    termination_settings : tudatpy.kernel.numerical_simulation.propagation_setup.propagator.PropagationTerminationSettings
+    termination_settings : tudatpy.numerical_simulation.propagation_setup.propagator.PropagationTerminationSettings
         Propagation termination settings object to be used
-    dependent_variables_to_save : list[tudatpy.kernel.numerical_simulation.propagation_setup.dependent_variable]
+    dependent_variables_to_save : list[tudatpy.numerical_simulation.propagation_setup.dependent_variable]
         List of dependent variables to save.
-    current_propagator : tudatpy.kernel.numerical_simulation.propagation_setup.propagator.TranslationalPropagatorType
+    current_propagator : tudatpy.numerical_simulation.propagation_setup.propagator.TranslationalPropagatorType
         Type of propagator to be used for translational dynamics
 
     Returns
     -------
-    propagator_settings : tudatpy.kernel.numerical_simulation.propagation_setup.integrator.MultiTypePropagatorSettings
+    propagator_settings : tudatpy.numerical_simulation.propagation_setup.integrator.MultiTypePropagatorSettings
         Propagator settings to be provided to the dynamics simulator.
     """
 
@@ -260,7 +260,7 @@ def get_trajectory_initial_time(trajectory_parameters: list,
     """
     return trajectory_parameters[0] * constants.JULIAN_DAY + buffer_time
 
-def get_hodographic_trajectory(shaping_object: tudatpy.kernel.trajectory_design.transfer_trajectory.TransferTrajectory,
+def get_hodographic_trajectory(shaping_object: tudatpy.trajectory_design.transfer_trajectory.TransferTrajectory,
                                output_path: str = None):
     """
     It computes the analytical hodographic trajectory and saves the results to a file
@@ -268,7 +268,7 @@ def get_hodographic_trajectory(shaping_object: tudatpy.kernel.trajectory_design.
     * hodographic_trajectory.dat: Cartesian states of semi-analytical trajectory;
     Parameters
     ----------
-    shaping_object: tudatpy.kernel.trajectory_design.transfer_trajectory.TransferTrajectory,
+    shaping_object: tudatpy.trajectory_design.transfer_trajectory.TransferTrajectory,
         TransferTrajectory object with a single leg: the hodographic shaping leg from Earth to Mars
     output_path : str (default: None)
         If and where to save the benchmark results (if None, results are NOT written).
@@ -446,8 +446,8 @@ def get_axial_velocity_shaping_functions(trajectory_parameters: list,
 
 
 def create_hodographic_trajectory(trajectory_parameters: list,
-                                  bodies: tudatpy.kernel.numerical_simulation.environment.SystemOfBodies) \
-        -> tudatpy.kernel.trajectory_design.transfer_trajectory.TransferTrajectory:
+                                  bodies: tudatpy.numerical_simulation.environment.SystemOfBodies) \
+        -> tudatpy.trajectory_design.transfer_trajectory.TransferTrajectory:
     """
     It creates and returns the hodographic shaping object, based on the trajectory parameters.
 
@@ -455,12 +455,12 @@ def create_hodographic_trajectory(trajectory_parameters: list,
     ----------
     trajectory_parameters : list
         List of trajectory parameters to be optimized.
-    bodies : tudatpy.kernel.numerical_simulation.environment.SystemOfBodies
+    bodies : tudatpy.numerical_simulation.environment.SystemOfBodies
         System of bodies present in the simulation.
 
     Returns
     -------
-    hodographic_shaping_object : tudatpy.kernel.trajectory_design.shape_based_thrust.HodographicShaping
+    hodographic_shaping_object : tudatpy.trajectory_design.shape_based_thrust.HodographicShaping
         Hodographic shaping object.
     """
     # Time settings
@@ -523,7 +523,7 @@ def create_hodographic_trajectory(trajectory_parameters: list,
 
 
 def set_hodograph_thrust_model(trajectory_parameters: list,
-                               bodies: tudatpy.kernel.numerical_simulation.environment.SystemOfBodies):
+                               bodies: tudatpy.numerical_simulation.environment.SystemOfBodies):
     """
     It extracts the acceleration settings resulting from the hodographic trajectory and returns the equivalent thrust
     acceleration settings object. In addition, it returns teh transfer trajectory object for later use in the code
@@ -532,7 +532,7 @@ def set_hodograph_thrust_model(trajectory_parameters: list,
     ----------
     trajectory_parameters : list[float]
         List of trajectory parameters to be optimized.
-    bodies : tudatpy.kernel.numerical_simulation.environment.SystemOfBodies
+    bodies : tudatpy.numerical_simulation.environment.SystemOfBodies
         System of bodies present in the simulation.
 
     Returns
@@ -554,9 +554,9 @@ def set_hodograph_thrust_model(trajectory_parameters: list,
 # NOTE TO STUDENTS: THIS FUNCTION CAN BE EXTENDED TO GENERATE A MORE ROBUST BENCHMARK (USING MORE THAN 2 RUNS)
 def generate_benchmarks(benchmark_step_size: float,
                         simulation_start_epoch: float,
-                        bodies: tudatpy.kernel.numerical_simulation.environment.SystemOfBodies,
+                        bodies: tudatpy.numerical_simulation.environment.SystemOfBodies,
                         benchmark_propagator_settings:
-                        tudatpy.kernel.numerical_simulation.propagation_setup.propagator.MultiTypePropagatorSettings,
+                        tudatpy.numerical_simulation.propagation_setup.propagator.MultiTypePropagatorSettings,
                         are_dependent_variables_present: bool,
                         output_path: str = None):
     """
@@ -580,7 +580,7 @@ def generate_benchmarks(benchmark_step_size: float,
         Minimum distance from Mars at which the propagation stops.
     time_buffer : float
         Time interval between the simulation start epoch and the beginning of the hodographic trajectory.
-    bodies : tudatpy.kernel.numerical_simulation.environment.SystemOfBodies,
+    bodies : tudatpy.numerical_simulation.environment.SystemOfBodies,
         System of bodies present in the simulation.
     benchmark_propagator_settings
         Propagator settings object which is used to run the benchmark propagations.

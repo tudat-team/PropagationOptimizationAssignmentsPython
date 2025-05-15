@@ -26,20 +26,20 @@ import numpy as np
 # Tudatpy imports
 import tudatpy
 from tudatpy.data import save2txt
-from tudatpy.kernel import constants
-from tudatpy.kernel.interface import spice_interface
-from tudatpy.kernel.numerical_simulation import propagation_setup
-from tudatpy.kernel.numerical_simulation import environment
-from tudatpy.kernel import numerical_simulation
-from tudatpy.kernel.astro import element_conversion
-from tudatpy.kernel.math import interpolators
+from tudatpy import constants
+from tudatpy.interface import spice as spice_interface
+from tudatpy.numerical_simulation import propagation_setup
+from tudatpy.numerical_simulation import environment
+from tudatpy import numerical_simulation
+from tudatpy.astro import element_conversion
+from tudatpy.math import interpolators
 
 ###########################################################################
 # PROPAGATION SETTING UTILITIES ###########################################
 ###########################################################################
 
 def get_initial_state(simulation_start_epoch: float,
-                      bodies: tudatpy.kernel.numerical_simulation.environment.SystemOfBodies) -> np.ndarray:
+                      bodies: tudatpy.numerical_simulation.environment.SystemOfBodies) -> np.ndarray:
     """
     Converts the initial state to inertial coordinates.
 
@@ -52,7 +52,7 @@ def get_initial_state(simulation_start_epoch: float,
     ----------
     simulation_start_epoch : float
         Start of the simulation [s] with t=0 at J2000.
-    bodies : tudatpy.kernel.numerical_simulation.environment.SystemOfBodies
+    bodies : tudatpy.numerical_simulation.environment.SystemOfBodies
         System of bodies present in the simulation.
 
     Returns
@@ -86,7 +86,7 @@ def get_termination_settings(simulation_start_epoch: float,
                              maximum_duration: float,
                              termination_altitude: float,
                              vehicle_dry_mass: float) \
-        -> tudatpy.kernel.numerical_simulation.propagation_setup.propagator.PropagationTerminationSettings:
+        -> tudatpy.numerical_simulation.propagation_setup.propagator.PropagationTerminationSettings:
     """
     Get the termination settings for the simulation.
 
@@ -108,7 +108,7 @@ def get_termination_settings(simulation_start_epoch: float,
 
     Returns
     -------
-    hybrid_termination_settings : tudatpy.kernel.numerical_simulation.propagation_setup.propagator.PropagationTerminationSettings
+    hybrid_termination_settings : tudatpy.numerical_simulation.propagation_setup.propagator.PropagationTerminationSettings
         Propagation termination settings object.
     """
     # Create single PropagationTerminationSettings objects
@@ -164,7 +164,7 @@ def get_dependent_variable_save_settings() -> list:
 
     Returns
     -------
-    dependent_variables_to_save : list[tudatpy.kernel.numerical_simulation.propagation_setup.dependent_variable]
+    dependent_variables_to_save : list[tudatpy.numerical_simulation.propagation_setup.dependent_variable]
         List of dependent variables to save.
     """
     dependent_variables_to_save = [propagation_setup.dependent_variable.altitude('Vehicle', 'Moon'),
@@ -193,22 +193,22 @@ def get_propagator_settings(thrust_parameters,
         List of free parameters for the thrust model, which will be used to update the vehicle properties such that
         the new thrust/magnitude direction are used. The meaning of the parameters in this list is stated at the
         start of the *Propagation.py file
-    bodies : tudatpy.kernel.numerical_simulation.environment.SystemOfBodies
+    bodies : tudatpy.numerical_simulation.environment.SystemOfBodies
         System of bodies present in the simulation.
     simulation_start_epoch : float
         Start of the simulation [s] with t=0 at J2000.
     vehicle_initial_mass : float
         Mass of the vehicle to be used at the initial time
-    termination_settings : tudatpy.kernel.numerical_simulation.propagation_setup.propagator.PropagationTerminationSettings
+    termination_settings : tudatpy.numerical_simulation.propagation_setup.propagator.PropagationTerminationSettings
         Propagation termination settings object to be used
-    dependent_variables_to_save : list[tudatpy.kernel.numerical_simulation.propagation_setup.dependent_variable]
+    dependent_variables_to_save : list[tudatpy.numerical_simulation.propagation_setup.dependent_variable]
         List of dependent variables to save.
-    current_propagator : tudatpy.kernel.numerical_simulation.propagation_setup.propagator.TranslationalPropagatorType
+    current_propagator : tudatpy.numerical_simulation.propagation_setup.propagator.TranslationalPropagatorType
         Type of propagator to be used for translational dynamics
 
     Returns
     -------
-    propagator_settings : tudatpy.kernel.numerical_simulation.propagation_setup.integrator.MultiTypePropagatorSettings
+    propagator_settings : tudatpy.numerical_simulation.propagation_setup.integrator.MultiTypePropagatorSettings
         Propagator settings to be provided to the dynamics simulator.
     """
 
@@ -396,9 +396,9 @@ class LunarAscentThrustGuidance:
         return thrust_inertial_frame
 
 def set_thrust_acceleration_model_from_parameters(thrust_parameters: list,
-                                                  bodies: tudatpy.kernel.numerical_simulation.environment.SystemOfBodies,
+                                                  bodies: tudatpy.numerical_simulation.environment.SystemOfBodies,
                                                   initial_time: float) -> \
-        tudatpy.kernel.numerical_simulation.propagation_setup.acceleration.ThrustAccelerationSettings:
+        tudatpy.numerical_simulation.propagation_setup.acceleration.ThrustAccelerationSettings:
     """
     Creates the thrust acceleration models from the LunarAscentThrustGuidance class and sets it in the propagator.
 
@@ -406,14 +406,14 @@ def set_thrust_acceleration_model_from_parameters(thrust_parameters: list,
     ----------
     thrust_parameters : list of floats
         List of thrust parameters.
-    bodies : tudatpy.kernel.numerical_simulation.environment.SystemOfBodies
+    bodies : tudatpy.numerical_simulation.environment.SystemOfBodies
         System of bodies present in the simulation.
     initial_time : float
         The start time of the simulation in seconds.
 
     Returns
     -------
-    tudatpy.kernel.numerical_simulation.propagation_setup.acceleration.ThrustAccelerationSettings
+    tudatpy.numerical_simulation.propagation_setup.acceleration.ThrustAccelerationSettings
         Thrust acceleration settings object.
     """
     # Create Thrust Guidance object
@@ -445,9 +445,9 @@ def set_thrust_acceleration_model_from_parameters(thrust_parameters: list,
 
 # NOTE TO STUDENTS: THIS FUNCTION CAN BE EXTENDED TO GENERATE A MORE ROBUST BENCHMARK (USING MORE THAN 2 RUNS)
 def generate_benchmarks(benchmark_step_size: float,
-                        bodies: tudatpy.kernel.numerical_simulation.environment.SystemOfBodies,
+                        bodies: tudatpy.numerical_simulation.environment.SystemOfBodies,
                         benchmark_propagator_settings:
-                        tudatpy.kernel.numerical_simulation.propagation_setup.propagator.MultiTypePropagatorSettings,
+                        tudatpy.numerical_simulation.propagation_setup.propagator.MultiTypePropagatorSettings,
                         are_dependent_variables_present: bool,
                         output_path: str = None):
     """
@@ -463,7 +463,7 @@ def generate_benchmarks(benchmark_step_size: float,
 
     Parameters
     ----------
-    bodies : tudatpy.kernel.numerical_simulation.environment.SystemOfBodies
+    bodies : tudatpy.numerical_simulation.environment.SystemOfBodies
         System of bodies present in the simulation.
     benchmark_propagator_settings
         Propagator settings object which is used to run the benchmark propagations.

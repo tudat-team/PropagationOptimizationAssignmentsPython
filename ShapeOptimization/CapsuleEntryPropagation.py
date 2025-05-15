@@ -113,13 +113,13 @@ import os
 
 # Tudatpy imports
 from tudatpy.data import save2txt
-from tudatpy.kernel import constants
-from tudatpy.kernel.interface import spice_interface
-from tudatpy.kernel.numerical_simulation import environment_setup
-from tudatpy.kernel.numerical_simulation import propagation_setup
-from tudatpy.kernel.numerical_simulation import environment
-from tudatpy.kernel import numerical_simulation
-from tudatpy.kernel.math import interpolators
+from tudatpy import constants
+from tudatpy.interface import spice as spice_interface
+from tudatpy.numerical_simulation import environment_setup
+from tudatpy.numerical_simulation import propagation_setup
+from tudatpy.numerical_simulation import environment
+from tudatpy import numerical_simulation
+from tudatpy.math import interpolators
 import tudatpy.util as util
 
 # Problem-specific imports

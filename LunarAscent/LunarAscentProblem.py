@@ -25,9 +25,9 @@ import LunarAscentUtilities as Util
 # Tudatpy imports
 import tudatpy
 from tudatpy.data import save2txt
-from tudatpy.kernel import constants
-from tudatpy.kernel.numerical_simulation import propagation_setup
-from tudatpy.kernel import numerical_simulation
+from tudatpy import constants
+from tudatpy.numerical_simulation import propagation_setup
+from tudatpy import numerical_simulation
 
 ###########################################################################
 # CREATE PROBLEM CLASS ####################################################
@@ -57,7 +57,7 @@ class LunarAscentProblem:
     """
 
     def __init__(self,
-                 bodies: tudatpy.kernel.numerical_simulation.environment.SystemOfBodies,
+                 bodies: tudatpy.numerical_simulation.environment.SystemOfBodies,
                  termination_settings,
                  simulation_start_epoch: float,
                  vehicle_mass: float,
@@ -66,11 +66,11 @@ class LunarAscentProblem:
         Constructor for the LunarAscentProblem class.
         Parameters
         ----------
-        bodies : tudatpy.kernel.numerical_simulation.environment_setup.SystemOfBodies
+        bodies : tudatpy.numerical_simulation.environment_setup.SystemOfBodies
             System of bodies present in the simulation.
-        integrator_settings : tudatpy.kernel.numerical_simulation.propagation_setup.integrator.IntegratorSettings
+        integrator_settings : tudatpy.numerical_simulation.propagation_setup.integrator.IntegratorSettings
             Integrator settings to be provided to the dynamics simulator.
-        propagator_settings : tudatpy.kernel.numerical_simulation.propagation_setup.propagator.MultiTypePropagatorSettings
+        propagator_settings : tudatpy.numerical_simulation.propagation_setup.propagator.MultiTypePropagatorSettings
             Propagator settings object.
         constant_specific_impulse : float
             Specific impulse of the vehicle that is kept constant during the propagation.
@@ -128,7 +128,7 @@ class LunarAscentProblem:
         """
         return self.dynamics_simulator_function( ).get_dependent_variable_history()
 
-    def get_last_run_dynamics_simulator(self) -> tudatpy.kernel.numerical_simulation.SingleArcSimulator:
+    def get_last_run_dynamics_simulator(self) -> tudatpy.numerical_simulation.SingleArcSimulator:
         """
         Returns the dynamics simulator object.
         Parameters
@@ -136,7 +136,7 @@ class LunarAscentProblem:
         none
         Returns
         -------
-        tudatpy.kernel.numerical_simulation.SingleArcSimulator
+        tudatpy.numerical_simulation.SingleArcSimulator
         """
         return self.dynamics_simulator_function( )
 
